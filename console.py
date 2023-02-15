@@ -21,7 +21,7 @@ class HBNBCommand(cmd.Cmd):
         'Empty line'
         pass
 
-    def do_help(self, arg: str) -> bool | None:
+    def do_help(self, arg):
         'This is used to get the documentation of a command'
         return super().do_help(arg)
 
