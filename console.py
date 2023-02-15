@@ -3,7 +3,7 @@ import cmd
 from models.base_model import BaseModel
 from models import storage
 from models import city, place, review, user, state, amenity
-
+'''The Console that operates with the storage engine'''
 
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
