@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import json
-import os.path
+import os
+from models.base_model import BaseModel
 
 
 class FileStorage:
@@ -12,14 +13,21 @@ class FileStorage:
 
     def new(self, obj):
         key = f"{obj.__class__.__name__}.{obj.id}"
-        self.__objects[key] = obj.__dict__
+        self.__objects[key] = obj
 
     def save(self):
-        with open(self.__file_path, "w") as file:
-            json.dump(self.__objects, file)
+        json_dict = {}
+        with open(self.__file_path, "w") as f:
+            for key, value in self.__objects.items():
+                json_dict[key] = value.to_dict()
+            json.dump(json_dict, f)
 
     def reload(self):
-        if os.path.isfile(self.__file_path):
-            with open(self.__file_path, "r") as file:
-                self.__objects = json.load(file)
-            # return self.__objects
+        if os.path.exists(self.__file_path):
+            if not os.stat(self.__file_path).st_size == 0:
+                with open(self.__file_path, "r") as file:
+                    all_objs = json.load(file)
+                    for key in all_objs:
+                        self.__objects[key] = BaseModel(**all_objs[key])
+        else:
+            return
