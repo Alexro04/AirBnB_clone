@@ -6,7 +6,10 @@ from models import city, place, review, user, state, amenity
 
 
 class HBNBCommand(cmd.Cmd):
-    '''The Console that operates with the storage engine'''
+    """
+    This is the MOdule for the Console. It conatins the codes to
+    create instances of all classes, store them and manipuate the stored data
+    """
     prompt = '(hbnb) '
     all_classes = ['BaseModel', 'User', 'City', 'Place', 'Review', 'Amenity', 'State']
 
@@ -71,8 +74,9 @@ class HBNBCommand(cmd.Cmd):
             if arg1 in self.all_classes:
                 all_objs = storage.all()
                 for key in all_objs:
-                    if all_objs[key].id == id and all_objs[key].__class__.__name__ == arg1:
-                        print(all_objs[key])
+                    if all_objs[key].id == id:
+                        if all_objs[key].__class__.__name__ == arg1:
+                            print(all_objs[key])
 
     def do_destroy(self, arg):
         "Deletes an instance based on the class name and id"
@@ -91,7 +95,6 @@ class HBNBCommand(cmd.Cmd):
             arg1, id = arg_list
             if arg1 in self.all_classes:
                 all_objs = storage.all()
-                print(all_objs)
                 was_found = False
                 for key in all_objs:
                     if all_objs[key].id == id and all_objs[key].__class__.__name__ == arg1:
@@ -99,7 +102,6 @@ class HBNBCommand(cmd.Cmd):
                         del all_objs[key]
                         storage.save()
                         break
-                print(all_objs)
                 if not was_found:
                     print("** no instance found **")
 

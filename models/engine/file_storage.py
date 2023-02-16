@@ -2,6 +2,7 @@
 import json
 import os
 from models.base_model import BaseModel
+from models import user, amenity, place, city, review, state
 
 
 class FileStorage:
@@ -28,6 +29,20 @@ class FileStorage:
                 with open(self.__file_path, "r") as file:
                     all_objs = json.load(file)
                     for key in all_objs:
-                        self.__objects[key] = BaseModel(**all_objs[key])
+                        arg = all_objs[key]['__class__']
+                        if arg == 'BaseModel':
+                            self.__objects[key] = BaseModel(**all_objs[key])
+                        elif arg == 'User':
+                            self.__objects[key] = user.User(**all_objs[key])
+                        elif arg == 'Place':
+                            self.__objects[key] = place.Place(**all_objs[key])
+                        elif arg == 'City':
+                            self.__objects[key] = city.City(**all_objs[key])
+                        elif arg == 'State':
+                            self.__objects[key] = state.State(**all_objs[key])
+                        elif arg == 'Review':
+                            self.__objects[key] = review.Review(**all_objs[key])
+                        elif arg == 'Amenity':
+                            self.__objects[key] = amenity.Amenity(**all_objs[key])
         else:
             return
